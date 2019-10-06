@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<employees date="2019-10-06T01:02:55.583+05:30">
+    <employee>
+        <empId>1</empId>
+        <firstName>Vishal</firstName>
+        <lastName>Sharma</lastName>
+        <hobbies>
+            <hobby>Playing Chess</hobby>
+            <hobby> Football</hobby>
+        </hobbies>
+        <department>
+            <deptId>1</deptId>
+            <deptName>GCE</deptName>
+        </department>
+    </employee>
+    <employee>
+        <empId>2</empId>
+        <firstName>Hero</firstName>
+        <lastName>Kumar</lastName>
+        <hobbies>
+            <hobby>Music</hobby>
+        </hobbies>
+        <department>
+            <deptId>2</deptId>
+            <deptName>CHAI</deptName>
+        </department>
+    </employee>
+    <employee>
+        <empId>3</empId>
+        <firstName>Hello</firstName>
+        <lastName>World</lastName>
+        <hobbies>
+            <hobby></hobby>
+        </hobbies>
+        <department>
+            <deptId>2</deptId>
+            <deptName>CHAI</deptName>
+        </department>
+    </employee>
+</employees>

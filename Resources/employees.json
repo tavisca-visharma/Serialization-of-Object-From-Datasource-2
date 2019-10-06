@@ -1,0 +1,42 @@
+{
+  "date": "Oct 6, 2019, 2:42:30 PM",
+  "employees": [
+    {
+      "id": 1,
+      "firstName": "Vishal",
+      "lastName": "Sharma",
+      "hobbies": [
+        "Playing Chess",
+        " Football"
+      ],
+      "department": {
+        "id": 1,
+        "name": "GCE"
+      }
+    },
+    {
+      "id": 2,
+      "firstName": "Hero",
+      "lastName": "Kumar",
+      "hobbies": [
+        "Music"
+      ],
+      "department": {
+        "id": 2,
+        "name": "CHAI"
+      }
+    },
+    {
+      "id": 3,
+      "firstName": "Hello",
+      "lastName": "World",
+      "hobbies": [
+        ""
+      ],
+      "department": {
+        "id": 2,
+        "name": "CHAI"
+      }
+    }
+  ]
+}
