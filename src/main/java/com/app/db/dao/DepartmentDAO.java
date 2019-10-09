@@ -4,13 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import com.app.db.DBConnection;
 import com.app.entity.Department;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DepartmentDAO {
 
-	Connection connection;
+	private List<Department> departments = null;
+	private Connection connection;
 
 	public DepartmentDAO() throws SQLException {
 		connection = DBConnection.getConnection();
@@ -23,6 +28,21 @@ public class DepartmentDAO {
 		ResultSet rs = preparedStatement.executeQuery();
 		rs.next();
 		return new Department(id, rs.getString("deptname"));
+	}
+
+	public List<Department> findAll() throws SQLException {
+		departments = new ArrayList<Department>();
+		String sqlQuery = "select * from department";
+		Statement statement = connection.createStatement();
+		ResultSet rs = statement.executeQuery(sqlQuery);
+		while (rs.next()) {
+			Department department = new Department(
+						rs.getInt("deptid"),
+						rs.getString("deptname")
+					);
+			departments.add(department);
+		}
+		return departments;
 	}
 
 }

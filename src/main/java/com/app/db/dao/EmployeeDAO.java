@@ -27,33 +27,29 @@ public class EmployeeDAO {
 		ResultSet rs = preparedStatement.executeQuery();
 		rs.next();
 		return new Employee(
-				rs.getInt("empid"),
-				rs.getString("firstname"),
-				rs.getString("lastname"),
-				extractHobbies(rs.getString("hobbies")),
-				findDepartment(rs.getInt("deptid"))
+					rs.getInt("empid"),
+					rs.getString("firstname"),
+					rs.getString("lastname"),
+					extractHobbies(rs.getString("hobbies")),
+					findDepartment(rs.getInt("deptid"))
 				);
 	}
 
-	public List<Employee> findAll() {
+	public List<Employee> findAll() throws SQLException {
 		employees = new ArrayList<Employee>();
-		try {
-			Statement statement = connection.createStatement();
-			String sqlQuery = "select * from employee";
-			ResultSet rs = statement.executeQuery(sqlQuery);
-			while (rs.next()) {
-				Employee employee = new Employee(
+		Statement statement = connection.createStatement();
+		String sqlQuery = "select * from employee";
+		ResultSet rs = statement.executeQuery(sqlQuery);
+		while (rs.next()) {
+			Employee employee = new Employee(
 						rs.getInt("empid"),
 						rs.getString("firstname"),
 						rs.getString("lastname"),
 						extractHobbies(rs.getString("hobbies")),
 						findDepartment(rs.getInt("deptid"))
-						);
+					);
 
-				employees.add(employee);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			employees.add(employee);
 		}
 		return employees;
 	}
