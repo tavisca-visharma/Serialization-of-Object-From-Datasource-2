@@ -1,5 +1,7 @@
 package com.app.entity;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -9,12 +11,11 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 
 @XmlRootElement(name = "employee")
 @XmlAccessorType(XmlAccessType.FIELD)
-@JsonPropertyOrder({"Emp Id", "First Name", "Last Name", "Hobbies" })
-@XmlType(propOrder = { "id", "firstName", "lastName", "hobbies", "department" })
+@JsonPropertyOrder({ "Emp Id", "First Name", "Last Name", "Hobbies", "Dept ID" })
+@XmlType(propOrder = { "id", "firstName", "lastName", "hobbies", "deptId" })
 public class Employee {
 
 	@XmlElement(name = "empId")
@@ -34,8 +35,8 @@ public class Employee {
 	@JsonProperty("Hobbies")
 	private String[] hobbies;
 
-	@JsonUnwrapped
-	private Department department;
+	@JsonProperty("Dept ID")
+	private int deptId;
 
 	public Employee() {
 
@@ -45,13 +46,13 @@ public class Employee {
 		this.id = id;
 	}
 
-	public Employee(int id, String firstName, String lastName, String[] hobbies, Department department) {
+	public Employee(int id, String firstName, String lastName, String[] hobbies, int deptId) {
 		super();
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.hobbies = hobbies;
-		this.department = department;
+		this.deptId = deptId;
 	}
 
 	public int getId() {
@@ -82,18 +83,18 @@ public class Employee {
 		this.hobbies = hobbies;
 	}
 
-	public Department getDepartment() {
-		return department;
+	public int getDeptId() {
+		return deptId;
 	}
 
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setDeptId(int deptId) {
+		this.deptId = deptId;
 	}
 
 	@Override
 	public String toString() {
-		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", hobbies=" + hobbies
-				+ ", department=" + department + "]";
+		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", hobbies="
+				+ Arrays.toString(hobbies) + ", deptId=" + deptId + "]";
 	}
 
 }

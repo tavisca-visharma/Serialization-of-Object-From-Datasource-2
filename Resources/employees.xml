@@ -1,40 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<employees date="2019-10-07T16:33:31.774+05:30">
-    <employee>
-        <empId>1</empId>
-        <firstName>Vishal</firstName>
-        <lastName>Sharma</lastName>
-        <hobbies>
-            <hobby>Playing Chess</hobby>
-            <hobby> Football</hobby>
-        </hobbies>
-        <department>
-            <deptId>1</deptId>
-            <deptName>GCE</deptName>
-        </department>
-    </employee>
-    <employee>
-        <empId>2</empId>
-        <firstName>Hero</firstName>
-        <lastName>Kumar</lastName>
-        <hobbies>
-            <hobby>Music</hobby>
-        </hobbies>
-        <department>
-            <deptId>2</deptId>
-            <deptName>CHAI</deptName>
-        </department>
-    </employee>
-    <employee>
-        <empId>3</empId>
-        <firstName>Hello</firstName>
-        <lastName>World</lastName>
-        <hobbies>
-            <hobby></hobby>
-        </hobbies>
-        <department>
-            <deptId>2</deptId>
-            <deptName>CHAI</deptName>
-        </department>
-    </employee>
-</employees>
+<departments date="2019-10-09T17:02:59.270+05:30">
+    <department Dept Id="1" Dept Name="GCE">
+        <employees>
+            <employee>
+                <empId>1</empId>
+                <firstName>Vishal</firstName>
+                <lastName>Sharma</lastName>
+                <hobbies>
+                    <hobby>Playing Chess</hobby>
+                    <hobby> Football</hobby>
+                </hobbies>
+                <deptId>1</deptId>
+            </employee>
+        </employees>
+    </department>
+    <department Dept Id="2" Dept Name="CHAI">
+        <employees>
+            <employee>
+                <empId>2</empId>
+                <firstName>Hero</firstName>
+                <lastName>Kumar</lastName>
+                <hobbies>
+                    <hobby>Music</hobby>
+                </hobbies>
+                <deptId>2</deptId>
+            </employee>
+            <employee>
+                <empId>3</empId>
+                <firstName>Hello</firstName>
+                <lastName>World</lastName>
+                <hobbies>
+                    <hobby></hobby>
+                </hobbies>
+                <deptId>2</deptId>
+            </employee>
+        </employees>
+    </department>
+</departments>

@@ -14,13 +14,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Employees {
 
-	@XmlAttribute(name = "date")
-	Date date = Date.from(Instant.now());
+//	@XmlAttribute(name = "date")
+//	Date date = Date.from(Instant.now());
 
 	@XmlElement(name = "employee")
 	private List<Employee> employees;
 
-	public List<Employee> getEmployees() {
+	public List<Employee> getAllEmployees() {
 		return employees;
 	}
 

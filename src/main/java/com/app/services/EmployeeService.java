@@ -5,13 +5,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import com.app.db.dao.DepartmentDAO;
 import com.app.db.dao.EmployeeDAO;
+import com.app.entity.DepartmentEmployeeCSV;
+import com.app.entity.Departments;
+import com.app.entity.DepartmentsWithEmployees;
 import com.app.entity.Employee;
 import com.app.entity.Employees;
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -29,20 +34,17 @@ public class EmployeeService {
 	private static final String JSON_FILE = "employees.json";
 	private static final String CSV_FILE = "employees.csv";
 
-	private Employees employees = null;
+	private Departments departments = null;
 
 	public EmployeeService() throws SQLException {
+		departments = new Departments();
+		DBMergeService dbMergeService = new DBMergeService();
 		EmployeeDAO employeeDAO = new EmployeeDAO();
-		employees = new Employees();
-		employees.setEmployees(employeeDAO.findAll());
-	}
+		DepartmentDAO departmentDAO = new DepartmentDAO();
+		List<DepartmentsWithEmployees> departmentsWithEmployees = dbMergeService.innerJoin(employeeDAO.findAll(),
+				departmentDAO.findAll());
+		departments.setDepartmentsWithEmployees(departmentsWithEmployees);
 
-	public List<Employee> getEmployees() {
-		return employees.getEmployees();
-	}
-
-	public void setEmployees(List<Employee> employees) {
-		this.employees.setEmployees(employees);
 	}
 
 	public boolean convertAndStoreInFile(int ch) throws JsonGenerationException, JsonMappingException, IOException {
@@ -50,16 +52,16 @@ public class EmployeeService {
 		switch (ch) {
 		case 1:
 			System.out.println("Converting to XML ...");
-			return convertToXML(this.employees);
+			return convertToXML(this.departments);
 
 		case 2:
 			System.out.println("Converting to JSON ...");
-			convertToJSON(this.employees);
+			convertToJSON(this.departments);
 			return true;
 
 		case 3:
 			System.out.println("Converting to CSV ...");
-			convertToCSV(this.employees);
+			convertToCSV(this.departments);
 			return true;
 		default:
 
@@ -69,21 +71,40 @@ public class EmployeeService {
 		return false;
 	}
 
-	private void convertToCSV(Employees employees) throws JsonGenerationException, JsonMappingException, IOException {
+	private void convertToCSV(Departments departments)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		
+		List<DepartmentEmployeeCSV> csvList = new ArrayList<DepartmentEmployeeCSV>();
 
+		for(DepartmentsWithEmployees de : departments.getDepartmentsWithEmployees()) {
+			int deptId = de.getDeptId();
+			String deptName = de.getDeptName();
+			for(Employee employee : de.getEmployees().getAllEmployees()) {
+				
+				DepartmentEmployeeCSV departmentEmployeeCSV = new DepartmentEmployeeCSV(
+						deptId,
+						deptName,
+						employee.getId(), 
+						employee.getFirstName(),
+						employee.getLastName(),
+						employee.getHobbies());
+				csvList.add(departmentEmployeeCSV);
+			}
+		}
+
+		
 		CsvMapper csvMapper = new CsvMapper();
-		CsvSchema schema = csvMapper.schemaFor(Employee.class).withHeader();
-		csvMapper.writer(schema)
-		.writeValue(new File(DIRECTORY_PATH + "\\" + CSV_FILE),
-				employees.getEmployees());
+		CsvSchema schema = csvMapper.schemaFor(DepartmentEmployeeCSV.class);
+		csvMapper.writer(schema).writeValue(new File(DIRECTORY_PATH + "\\" + CSV_FILE),
+				csvList);
 
 	}
 
-	private void convertToJSON(Employees employees) {
+	private void convertToJSON(Departments departments) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		try {
 			Writer writer = new FileWriter(DIRECTORY_PATH + "\\" + JSON_FILE);
-			gson.toJson(employees, writer);
+			gson.toJson(departments, writer);
 			writer.flush();
 			writer.close();
 		} catch (JsonIOException | IOException e) {
@@ -91,12 +112,12 @@ public class EmployeeService {
 		}
 	}
 
-	private boolean convertToXML(Employees employees) {
+	private boolean convertToXML(Departments departments) {
 		try {
-			JAXBContext jaxbContext = JAXBContext.newInstance(Employees.class);
+			JAXBContext jaxbContext = JAXBContext.newInstance(Departments.class);
 			Marshaller marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-			marshaller.marshal(employees, new File(DIRECTORY_PATH + "\\" + XML_FILE));
+			marshaller.marshal(departments, new File(DIRECTORY_PATH + "\\" + XML_FILE));
 		} catch (JAXBException e) {
 			e.printStackTrace();
 			return false;

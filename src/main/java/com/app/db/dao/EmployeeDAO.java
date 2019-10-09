@@ -31,7 +31,7 @@ public class EmployeeDAO {
 					rs.getString("firstname"),
 					rs.getString("lastname"),
 					extractHobbies(rs.getString("hobbies")),
-					findDepartment(rs.getInt("deptid"))
+					rs.getInt("deptid")
 				);
 	}
 
@@ -46,7 +46,7 @@ public class EmployeeDAO {
 						rs.getString("firstname"),
 						rs.getString("lastname"),
 						extractHobbies(rs.getString("hobbies")),
-						findDepartment(rs.getInt("deptid"))
+						rs.getInt("deptid")
 					);
 
 			employees.add(employee);
