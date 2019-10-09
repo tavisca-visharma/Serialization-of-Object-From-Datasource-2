@@ -4,18 +4,20 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.SQLException;
 import java.util.List;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import com.app.Entity.Employee;
-import com.app.Entity.Employees;
-import com.app.dao.EmployeeDAO;
+import com.app.db.dao.EmployeeDAO;
+import com.app.entity.Employee;
+import com.app.entity.Employees;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonIOException;
@@ -29,10 +31,10 @@ public class EmployeeService {
 
 	private Employees employees = null;
 
-	public EmployeeService() {
+	public EmployeeService() throws SQLException {
 		EmployeeDAO employeeDAO = new EmployeeDAO();
 		employees = new Employees();
-		employees.setEmployees(employeeDAO.getAllEmployees());
+		employees.setEmployees(employeeDAO.findAll());
 	}
 
 	public List<Employee> getEmployees() {
@@ -43,7 +45,7 @@ public class EmployeeService {
 		this.employees.setEmployees(employees);
 	}
 
-	public boolean convertAndStoreInFile(int ch) {
+	public boolean convertAndStoreInFile(int ch) throws JsonGenerationException, JsonMappingException, IOException {
 
 		switch (ch) {
 		case 1:
@@ -67,30 +69,14 @@ public class EmployeeService {
 		return false;
 	}
 
-	private void convertToCSV(Employees employees) {
-		StringJoiner headers = new StringJoiner(",");
-		headers.add("EMP ID").add("FIRSTNAME").add("LASTNAME").add("HOBBIES").add("DEPT ID").add("DEPTNAME");
-		String csvString = headers.toString() + "\n";
-		for(Employee employee : employees.getEmployees()) {
-			String hobbies = Stream.of(employee.getHobbies()).collect(Collectors.joining(" &"));
-			StringJoiner csvLine = new StringJoiner(",");
-			csvLine
-					.add(employee.getId() + "")
-					.add(employee.getFirstName())
-					.add(employee.getLastName())
-					.add(hobbies)
-					.add(employee.getDepartment().getId() + "")
-					.add(employee.getDepartment().getName());
-			csvString += csvLine.toString() + "\n";
-		}
-		System.out.println(csvString);
-		try {
-			FileWriter fileWriter = new FileWriter(DIRECTORY_PATH + "\\" + CSV_FILE);
-			fileWriter.write(csvString);
-			fileWriter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	private void convertToCSV(Employees employees) throws JsonGenerationException, JsonMappingException, IOException {
+
+		CsvMapper csvMapper = new CsvMapper();
+		CsvSchema schema = csvMapper.schemaFor(Employee.class).withHeader();
+		csvMapper.writer(schema)
+		.writeValue(new File(DIRECTORY_PATH + "\\" + CSV_FILE),
+				employees.getEmployees());
+
 	}
 
 	private void convertToJSON(Employees employees) {

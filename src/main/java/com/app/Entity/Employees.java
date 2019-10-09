@@ -1,4 +1,4 @@
-package com.app.Entity;
+package com.app.entity;
 
 import java.time.Instant;
 import java.util.Date;
@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlRootElement(name = "employees")
 @XmlAccessorType(XmlAccessType.FIELD)
