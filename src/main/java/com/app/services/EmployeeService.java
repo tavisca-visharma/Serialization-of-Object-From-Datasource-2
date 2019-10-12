@@ -18,7 +18,6 @@ import com.app.entity.DepartmentEmployeeCSV;
 import com.app.entity.Departments;
 import com.app.entity.DepartmentsWithEmployees;
 import com.app.entity.Employee;
-import com.app.entity.Employees;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -94,7 +93,7 @@ public class EmployeeService {
 
 		
 		CsvMapper csvMapper = new CsvMapper();
-		CsvSchema schema = csvMapper.schemaFor(DepartmentEmployeeCSV.class);
+		CsvSchema schema = csvMapper.schemaFor(DepartmentEmployeeCSV.class).withHeader();
 		csvMapper.writer(schema).writeValue(new File(DIRECTORY_PATH + "\\" + CSV_FILE),
 				csvList);
 

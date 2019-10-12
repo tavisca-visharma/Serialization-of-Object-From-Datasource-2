@@ -1,5 +1,5 @@
 {
-  "date": "Oct 9, 2019, 4:57:01 PM",
+  "date": "Oct 10, 2019, 8:56:48 AM",
   "departments": [
     {
       "deptId": 1,
@@ -43,6 +43,13 @@
             "deptId": 2
           }
         ]
+      }
+    },
+    {
+      "deptId": 4,
+      "deptName": "See You Soon",
+      "employees": {
+        "employees": []
       }
     }
   ]

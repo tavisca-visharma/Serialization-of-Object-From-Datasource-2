@@ -2,6 +2,7 @@ package com.app.services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.app.entity.Department;
 import com.app.entity.DepartmentsWithEmployees;
@@ -28,4 +29,17 @@ public class DBMergeService {
 		return departmentsWithEmployees;
 	}
 
+	public List<DepartmentsWithEmployees> innerJoin(List<Employee> employees, List<Department> departments,
+			boolean withStreams) {
+		if (withStreams == false)
+			return innerJoin(employees, departments);
+
+		return departments.stream().map(department -> {
+
+			Employees emps = new Employees();
+			emps.setEmployees(employees.stream().filter(employee -> department.getId() == employee.getDeptId())
+					.collect(Collectors.toList()));
+			return new DepartmentsWithEmployees(department, emps);
+		}).collect(Collectors.toList());
+	}
 }

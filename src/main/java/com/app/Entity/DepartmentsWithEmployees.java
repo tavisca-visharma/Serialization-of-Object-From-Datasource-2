@@ -9,15 +9,20 @@ public class DepartmentsWithEmployees {
 
 	@XmlAttribute(name = "Dept Id")
 	private int deptId;
-	
+
 	@XmlAttribute(name = "Dept Name")
 	private String deptName;
 
 	@JsonUnwrapped
-	private Employees employees;
+	private Employees employees = null;
 
 	public DepartmentsWithEmployees() {
 
+	}
+
+	public DepartmentsWithEmployees(Department department) {
+		deptId = department.getId();
+		deptName = department.getName();
 	}
 
 	public DepartmentsWithEmployees(Department department, Employees employees) {
@@ -27,18 +32,10 @@ public class DepartmentsWithEmployees {
 		this.employees = employees;
 	}
 
-//	public Department getDepartment() {
-//		return department;
-//	}
-//
-//	public void setDepartment(Department department) {
-//		this.department = department;
-//	}
-
 	public Employees getEmployees() {
 		return employees;
 	}
-	
+
 	@XmlTransient
 	public int getDeptId() {
 		return deptId;
@@ -57,9 +54,5 @@ public class DepartmentsWithEmployees {
 		this.employees = employees;
 	}
 
-//	@Override
-//	public String toString() {
-//		return "DepartmentsWithEmployees [department=" + department + ", employees=" + employees + "]";
-//	}
 
 }
